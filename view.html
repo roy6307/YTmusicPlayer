@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Youtube Music Player</title>
+  </head>
+  <body>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+      var data = new Object;
+      var request=require("request"),ytdl=require("ytdl-core"),fs=require("fs");function search(){return new Promise(function(e,t){var r=document.getElementById("search_bar").value,a="https://www.googleapis.com/youtube/v3/search?q="+(r=encodeURI(r))+"&part=snippet&key=AIzaSyDikf229xNW2Rp8WpCky8Ozdh4hb8Q_6qI&maxResults=4";console.log(a);var n=new Array,s=new Array,i=new Array;request(a,function(t,r,a){var u=JSON.parse(a).items;LEN=Object.keys(u).length;for(var o=0;o<LEN;o++)n.push(u[o].id.videoId),s.push(u[o].snippet.title),i.push(u[o].snippet.thumbnails);data.Titles=s,data.Ids=n,data.Thumbnails=i,e()})})}function MusicDownload(e,t){return new Promise(function(r,a){var n=Math.floor(new Date/1e3)+".mp3";"true"==t?(ytdl(e).pipe(fs.createWriteStream(n)),r()):(ytdl(e,{filter:"audioonly"}).pipe(fs.createWriteStream(n)),r())})}
+      
+      function test(e){for(var t=0;t<Object.keys(e.Titles).length;t++){var i='"#video'+(t+1)+'"',l='<input type="image" src="'+e.Thumbnails[t].medium.url+'">';console.log(i),$("video1").html(l);}}
+      </script>
+
+    <script>
+      
+    </script>
+
+    <div class="main_div" style="background-color: blueviolet;">
+      <p><input id="search_bar" type="text" value="Search bar..." /> <input name="btn_search" type="button" value="search!" onclick="search().then(() => test(data))"/></p>
+
+      <div style="overflow: auto; background-color: brown; height: 162px;">
+
+        <div id="video1"></div>
+        <div id="video2"></div>
+        <div id="video3"></div>
+        <div id="video4"></div>
+      
+      </div>
+
+      <div style="width: 200; height: 50;">
+
+        <div class="bottom" style="padding-right: 20px; float: right;">
+          
+          <input type="image" src="./img/button.jpg" id="prev">&Tab;<input type="image" src="./img/button.jpg" id="playing">&Tab;<input type="image" src="./img/button.jpg" id="next">
+
+        </div>
+
+      </div>
+
+    </div>
+    
+
+
+    <!-- You can also require other files to run in this process -->
+  </body>
+</html>

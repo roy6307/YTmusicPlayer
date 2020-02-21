@@ -1,0 +1,22 @@
+{
+  "name": "ytmusicplayer",
+  "version": "1.0.0",
+  "description": "A simple youtube music player",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "roy6307",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^8.0.1"
+  },
+  "dependencies": {
+    "async": "^3.1.1",
+    "ffmpeg": "0.0.4",
+    "jquery": "^3.4.1",
+    "request": "^2.88.2",
+    "ytdl-core": "^1.0.9"
+  }
+}
