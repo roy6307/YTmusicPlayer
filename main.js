@@ -1,10 +1,17 @@
 const {app, BrowserWindow} = require('electron');
 
+/*
+2.재생도중 새 음악 재생
+3.재생 끝낼시, 삭제
+4. 재생목록
+5. 디자인
+*/
 
 function createWindow(){
     let win = new BrowserWindow({
-        width:730,
-        height:400,
+        width:580,
+        height:310,
+        resizable:false,
         webPreferences:{
             nodeIntegration:true
         }
