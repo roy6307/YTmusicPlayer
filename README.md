@@ -2,7 +2,8 @@
 
 1. npm install
 2. npm run
-3. type music name, and click search button
-4. click a video image.
-5. wait while song's name appear. 
-6. press squre button.
+3. change API key to yours. 
+4. type music name, and click search button
+5. click a video image.
+6. wait while song's name appear. 
+7. press squre button.
