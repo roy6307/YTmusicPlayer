@@ -5,4 +5,4 @@
 3. type music name, and click search button
 4. click a video image.
 5. wait while song's name appear. 
-6. press green button.
+6. press squre button.
