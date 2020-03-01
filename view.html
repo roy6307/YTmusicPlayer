@@ -22,9 +22,11 @@
         audio.currentTime = 0;
 
         function change(){
+
             var i = audio.currentTime/audio.duration*100;
-                    var t = "conic-gradient(#a64dff 0% "+i+"%, #595959 0% 100%)";
-                    document.getElementById('pie').style.background = t;
+            var t = "conic-gradient(#a64dff 0% "+i+"%, #595959 0% 100%)";
+            document.getElementById('pie').style.background = t;
+
         }
 
         function search() {
@@ -32,7 +34,7 @@
             return new Promise(function(e, t) {
 
                 var r = document.getElementById("search_bar").value,
-                    a = "https://www.googleapis.com/youtube/v3/search?q=" + (r = encodeURI(r)) + "&part=snippet&key=AIzaSyBj0Hkeya14ZL60pv5FwYzkMlrlL7Zeffc&maxResults=10";
+                    a = "https://www.googleapis.com/youtube/v3/search?q=" + (r = encodeURI(r)) + "&part=snippet&key=AIzaSyBd2yP3CLK5kQyQNZtjcMffxCFP0ApISGk&maxResults=10";
 
                 var n = new Array,
                     s = new Array,
@@ -93,11 +95,19 @@
 
             for (var t = 0; t < Object.keys(e.Titles).length; t++) {
 
+                //e.Titles[t] = e.Titles[t].replace(/(&#39;)/gi,"\\'");
+
+            }
+
+            for (var t = 0; t < Object.keys(e.Titles).length; t++) {
+
                 var n = "video" + (t + 1),
-                    i = '<input type="image" src="' + e.Thumbnails[t].medium.url + '" style="padding-bottom: 4px; width: 132px; height: 77px; float: left;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t] + '\')">',
+                    i = '<input type="image" src="' + e.Thumbnails[t].medium.url + '" style="padding-bottom: 4px; width: 132px; height: 77px; float: left;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">',
                     l = 'text' + (t + 1),
-                    o = '<div style="display: inline-block; height: 81px; width: 383px; word-break:normal;">' + e.Titles[t] + '</div>';
+                    o = '<div style="display: inline-block; height: 81px; width: 383px; word-break:normal;onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">' + e.Titles[t] + '</div>';
                 document.getElementById(l).innerHTML = o, document.getElementById(n).innerHTML = i
+
+                console.log()
 
             }
         }
@@ -155,7 +165,16 @@
                     audio.pause();
                     audio.currentTime = 0;
                     IsPlaying = false;
+
+                    fs.unlink("./"+selected,(err) =>{
+
+                        console.log(err);
+
+                    });
+
                     selected = "";
+                    console.log('song end');
+                    
 
                 });
 
@@ -185,7 +204,7 @@
         <div class="main_div">
 
             <p>
-                <input id="search_bar" type="text" value="Search bar..." />
+                <input id="search_bar" type="text" value="" />
                 <input name="btn_search" type="button" value="search!" onclick="search().then(() => insert(data))" />
             </p>
 
