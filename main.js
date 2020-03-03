@@ -1,4 +1,5 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, Menu, shell} = require('electron');
+const fs = require('fs')
 
 /*
 2.재생도중 새 음악 재생
@@ -11,15 +12,64 @@ const {app, BrowserWindow} = require('electron');
 function createWindow(){
     let win = new BrowserWindow({
         width:580,
-        height:310,
+        height:330,
         resizable:false,
         webPreferences:{
             nodeIntegration:true
         }
     });
     win.webContents.openDevTools();
-    win.setMenu(null);
     win.loadFile('view.html');
+
+    fs.exists(__dirname+"/data", (IsExist) => {
+
+        if(IsExist == false) fs.mkdir(__dirname+"/data", (err) => {console.log(err);});
+
+
+
+        fs.exists(__dirname+"/data/cache", (IsExist2) => {
+
+            if(IsExist2 == false) fs.mkdir(__dirname+"/data/cache", (err) => {console.log(err);});
+
+        })
+
+        fs.exists(__dirname+"/data/settings.json", (IsExist3) => {
+
+            if(IsExist3 == false) fs.writeFile(__dirname+"/data/settings.json", '{\n"API": ""\n}', (err) => {console.log(err);})
+
+        })
+
+    });
+
+
+    const template = [
+        {
+          label: 'Config',
+          submenu: [
+            {
+                label: "Config API key",
+                click: async () => {
+                    await shell.openItem(__dirname+"/data/settings.json");
+                }
+            }
+          ]
+        },
+        {
+          role: 'help',
+          submenu: [
+            {
+                label: 'Source code',
+                click: async () => {
+                    await shell.openExternal('https://github.com/roy6307/YTmusicPlayer');
+                }
+            }
+          ]
+        }
+      ]
+      
+      const menu = Menu.buildFromTemplate(template)
+      Menu.setApplicationMenu(menu)
+    
 
 }
 
