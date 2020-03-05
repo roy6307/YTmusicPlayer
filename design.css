@@ -4,7 +4,7 @@ input[type=range] {
   margin: 10px 0;
   width: 129px;
   background-color: rgb(109, 109, 109);
-  padding-bottom: 15px;
+  padding-bottom: 7px;
 }
 input[type=range]:focus {
   outline: none;
@@ -118,4 +118,17 @@ input[type=range]:focus::-ms-fill-upper {
   background: rgb(109, 109, 109);
   width:54px;
   height:54px;
+}
+
+#name_display{
+  padding-top: 10px;
+}
+
+#top_bar{
+  padding-left: 145px;
+  padding-bottom: 14px;
+}
+
+#under{
+  padding-top: 7px;
 }

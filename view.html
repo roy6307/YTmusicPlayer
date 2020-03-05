@@ -10,6 +10,7 @@
 <body>
 
     <script>
+
         var data = new Object;
         var request = require("request"),
             ytdl = require("ytdl-core"),
@@ -18,6 +19,7 @@
         var IsPlaying = false;
         var audio = new Audio();
         const {shell} = require('electron');
+        var compare;
         
 
         audio.volume = 0.5;
@@ -34,8 +36,16 @@
 
             }
         });
-        
 
+        function DoesPress13(evt){
+
+            if (evt.keyCode == 13){
+
+                search().then(() => insert(data));
+
+            }
+
+        }
 
         function change(){
 
@@ -96,14 +106,26 @@
 
             return new Promise(function(r, a) {
 
-                var v;
-                true == t ? ((v = ytdl(e)).pipe(fs.createWriteStream(n)), v.on("end", () => {
-                    r()
-                })) : ((v = ytdl(e, {
-                    filter: "audioonly"
-                })).pipe(fs.createWriteStream(n)), v.on("end", () => {
-                    r()
-                }));
+                fs.exists(n, (IsExist) => {
+
+                    if(IsExist == true){
+
+                        r();
+
+                    }else{
+
+                        var v;
+                        true == t ? ((v = ytdl(e)).pipe(fs.createWriteStream(n)), v.on("end", () => {
+                            r();
+                        })) : ((v = ytdl(e, {
+                            filter: "audioonly"
+                        })).pipe(fs.createWriteStream(n)), v.on("end", () => {
+                            r();
+                        }));
+
+                    }
+
+                });
 
             })
         }
@@ -128,40 +150,45 @@
                 var n = "video" + (t + 1),
                     i = '<input type="image" src="' + e.Thumbnails[t].medium.url + '" style="padding-bottom: 4px; width: 132px; height: 77px; float: left;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">',
                     l = 'text' + (t + 1),
-                    o = '<div style="display: inline-block; height: 81px; width: 383px; word-break:normal;onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">' + e.Titles[t] + '</div>';
+                    o = '<div style="display: inline-block; height: 81px; width: 383px; word-break:normal;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">' + e.Titles[t] + '</div>';
                 document.getElementById(l).innerHTML = o, document.getElementById(n).innerHTML = i
-
-                console.log()
 
             }
         }
 
         function play() {
 
-            if (IsPlaying == true && selected != "" && audio.currentTime != 0) { //play to pause
+            compare = ("file:///"+__dirname+"/data/cache/"+selected).replace(/\\/gi,"/")
 
-                console.log(1);
+            if (selected != "" && audio.currentTime != 0 && audio.src != compare){ //재생중 재생
+
+                IsPlaying = false;
+                audio.currentTime = 0;
+                audio.src = __dirname+"/data/cache/"+selected;
+                play();
+
+            }
+
+            if (IsPlaying == true && selected != "" && audio.currentTime != 0 && audio.src == compare) { //play to pause
+
                 audio.pause();
                 IsPlaying = false;
-
-                clearInterval
-
-                return;
-
-            }
-
-            if (IsPlaying == false && selected == "" && audio.currentTime == 0) { //재생이 끝나있음
-
-                console.log(2);
-                console.log("plz select a song!");
+                
 
                 return;
 
             }
 
-            if (IsPlaying == false && selected != "" && audio.currentTime != 0) { //pause to play
+            if (IsPlaying == false && selected == "" && audio.currentTime == 0 && audio.src == compare) { //재생이 끝나있음
 
-                console.log(3);
+                alert("Please select a song!");
+
+                return;
+
+            }
+
+            if (IsPlaying == false && selected != "" && audio.currentTime != 0 && audio.src == compare) { //pause to play
+
                 audio.play();
                 IsPlaying = true;
 
@@ -175,7 +202,6 @@
 
             if (IsPlaying == false && selected != "" && audio.currentTime == 0) { //selected, but not playing
 
-                console.log(4);
                 audio.src = __dirname+'/data/cache/' + selected;
                 audio.play();
                 IsPlaying = true;
@@ -221,10 +247,10 @@
     <div class="real_main_div">
         <div class="main_div">
 
-            <p>
-                <input id="search_bar" type="text" value="" />
-                <input name="btn_search" type="button" value="search!" onclick="search().then(() => insert(data))" />
-            </p>
+            <div id="top_bar">
+                <input id="search_bar" type="text" value="" onkeypress="DoesPress13(event)"/>
+                <input id="btn_search" type="button" value="search!" onclick="search().then(() => insert(data))" />
+            </div>
 
             <div style="overflow: auto; height: 162px;">
 
@@ -262,7 +288,7 @@
 
         </div>
 
-        <div style="width: 556px; height: 54px;">
+        <div style="width: 556px; height: 54px;" id="under">
 
             <div id="name_display" style="float: left; width: 330.7px; height: 51px;">
 

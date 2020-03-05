@@ -2,17 +2,16 @@ const {app, BrowserWindow, Menu, shell} = require('electron');
 const fs = require('fs')
 
 /*
-2.재생도중 새 음악 재생
-4. 재생목록
 5. 디자인
 7. 재생한거 다시 재생
 9. 캐쉬처럼 쌓아놓고 나중에 ffmpeg으로 널널할때 변환해서 용량 줄여놓기, 나중에 같은거 재생할때 용량이랑 로딩이 줄을거임.
+10. 로딩중일땐 뭔가 하기.
 */
 
 function createWindow(){
     let win = new BrowserWindow({
         width:580,
-        height:330,
+        height:329,
         resizable:false,
         webPreferences:{
             nodeIntegration:true
@@ -24,8 +23,6 @@ function createWindow(){
     fs.exists(__dirname+"/data", (IsExist) => {
 
         if(IsExist == false) fs.mkdir(__dirname+"/data", (err) => {console.log(err);});
-
-
 
         fs.exists(__dirname+"/data/cache", (IsExist2) => {
 
@@ -41,15 +38,38 @@ function createWindow(){
 
     });
 
+    function RemoveCache(){
+
+        fs.readdirSync(__dirname+"/data/cache/").forEach(file => {
+
+            if(file != false){
+
+                fs.unlink(__dirname+"/data/cache/"+file, err => {
+
+                    console.log(err);
+
+                });
+
+            }
+
+        });
+
+    }
 
     const template = [
         {
-          label: 'Config',
+          label: 'File',
           submenu: [
             {
                 label: "Config API key",
                 click: async () => {
                     await shell.openItem(__dirname+"/data/settings.json");
+                }
+            },
+            {
+                label: "Remove caches",
+                click: async () => {
+                    await RemoveCache();
                 }
             }
           ]
