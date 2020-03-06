@@ -4,14 +4,15 @@ const fs = require('fs')
 /*
 5. 디자인
 7. 재생한거 다시 재생
-9. 캐쉬처럼 쌓아놓고 나중에 ffmpeg으로 널널할때 변환해서 용량 줄여놓기, 나중에 같은거 재생할때 용량이랑 로딩이 줄을거임.
-10. 로딩중일땐 뭔가 하기.
+9. 캐쉬처럼 쌓아놓고 나중에 ffmpeg 같은걸로 널널할때 변환해서 용량 줄여놓기, 나중에 같은거 재생할때 용량이랑 로딩이 줄을거임.
+10. 다운중일땐 로딩바 보이기, 재생버튼 못건들이게 하기.
+11. 재생 상태에 따라 버튼 모양 바꾸기
 */
 
 function createWindow(){
     let win = new BrowserWindow({
         width:580,
-        height:329,
+        height:355,
         resizable:false,
         webPreferences:{
             nodeIntegration:true
