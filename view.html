@@ -20,10 +20,13 @@
         var audio = new Audio();
         const {shell} = require('electron');
         var compare;
+        var IT = false;
         
 
         audio.volume = 0.5;
         audio.currentTime = 0;
+
+        LoadBar();
 
         fs.readFile(__dirname+"/data/settings.json",(err,dataqwer) => {
 
@@ -36,6 +39,22 @@
 
             }
         });
+
+        function LoadBar(){
+
+            if(IT == true){
+
+                document.getElementById('load_bar').style.display = "inline-block";
+
+            }
+
+            if(IT == false){
+
+                document.getElementById('load_bar').style.display = "none";
+
+            }
+
+        }
 
         function DoesPress13(evt){
 
@@ -77,8 +96,8 @@
                             s = new Array,
                             i = new Array;
 
-                        request(a, function(t, r, a) {
-                            var u = JSON.parse(a).items;
+                        request(a, function(t, r, b) {
+                            var u = JSON.parse(b).items;
                             LEN = Object.keys(u).length;
 
                             for (var o = 0; o < LEN; o++) {
@@ -106,20 +125,31 @@
 
             return new Promise(function(r, a) {
 
+                if(IT == true){alert("Song is downloading.\nQueue feature will be added.");return;}
+
+                IT = true;
+                LoadBar();
+
                 fs.exists(n, (IsExist) => {
 
                     if(IsExist == true){
 
+                        IT = false;
+                        LoadBar();
                         r();
 
                     }else{
 
                         var v;
                         true == t ? ((v = ytdl(e)).pipe(fs.createWriteStream(n)), v.on("end", () => {
+                            IT = false;
+                            LoadBar();
                             r();
                         })) : ((v = ytdl(e, {
                             filter: "audioonly"
                         })).pipe(fs.createWriteStream(n)), v.on("end", () => {
+                            IT = false;
+                            LoadBar();
                             r();
                         }));
 
@@ -158,7 +188,7 @@
 
         function play() {
 
-            compare = ("file:///"+__dirname+"/data/cache/"+selected).replace(/\\/gi,"/")
+            compare = ("file:///"+__dirname+"/data/cache/"+selected).replace(/\\/gi,"/");
 
             if (selected != "" && audio.currentTime != 0 && audio.src != compare){ //재생중 재생
 
@@ -248,7 +278,7 @@
         <div class="main_div">
 
             <div id="top_bar" style="padding-bottom: 2px;">
-                <input id="search_bar" type="text" value="" onkeypress="DoesPress13(event)"/><input id="btn_search" type="button" value="search!" onclick="search().then(() => insert(data))" />
+                <input id="search_bar" type="text" value="" onkeypress="DoesPress13(event)"/><input id="btn_search" type="button" value="search!" onclick="search().then(() => insert(data))" /><div id="load_bar">Downloading</div>
             </div>
             <hr width="91%">
 
