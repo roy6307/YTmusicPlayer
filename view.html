@@ -188,6 +188,36 @@
 
         function play() {
 
+            var cen = document.getElementById("pie_center2").style;
+
+            if(IsPlaying == true){
+
+                cen.position = "absolute";
+                cen.width = "0px";
+                cen.height = "0px";
+                cen.borderTop = "12.2px solid transparent";
+                cen.borderBottom = "12.2px solid transparent";
+                cen.borderRight = "21.13px solid transparent";
+                cen.borderLeft = "21.13px solid orange";
+                cen.backgroundColor = "";
+                cen.top = "7px";
+                cen.left = "9.5px";
+
+            }else{
+
+                cen.position = "absolute";
+                cen.width = "24.4px";
+                cen.height = "24.4px";
+                cen.borderTop = "";
+                cen.borderBottom = "";
+                cen.borderRight = "";
+                cen.borderLeft = "";
+                cen.backgroundColor = "rgb(153, 153, 153)";
+                cen.top = "7px";
+                cen.left = "7px";
+
+            }
+
             compare = ("file:///"+__dirname+"/data/cache/"+selected).replace(/\\/gi,"/");
 
             if (selected != "" && audio.currentTime != 0 && audio.src != compare){ //재생중 재생
@@ -282,7 +312,7 @@
             </div>
             <hr width="91%">
 
-            <div style="overflow: auto; height: 162px;">
+            <div class="MV" style="overflow: auto; height: 162px;">
 
                 <div class="imgs">
 
@@ -333,7 +363,7 @@
 
             <div class="bottom" style="display: inline-block;">
 
-                <div class="BtnMain" onclick="play()"><div id="pie"style="background: conic-gradient(#a64dff 0% 0%, #595959 0% 100%);"><span class="pie_center"><span class="pie_center2"></span></span></div></div>
+                <div class="BtnMain" onclick="play()"><div id="pie"style="background: conic-gradient(#a64dff 0% 0%, #595959 0% 100%);"><span class="pie_center"><span id="pie_center2" style="position:absolute;width:0;height:0;border-top:12.2px solid transparent;border-bottom:12.2px solid transparent;border-right:21.13px solid transparent;border-left:21.13px solid orange;top:7px;left:9.5px;"></span></span></div></div>
 
             </div>
 

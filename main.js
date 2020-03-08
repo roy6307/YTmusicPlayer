@@ -2,10 +2,8 @@ const {app, BrowserWindow, Menu, shell} = require('electron');
 const fs = require('fs')
 
 /*
-5. 디자인
 7. 재생한거 다시 재생
 9. 캐쉬처럼 쌓아놓고 나중에 ffmpeg 같은걸로 널널할때 변환해서 용량 줄여놓기, 나중에 같은거 재생할때 용량이랑 로딩이 줄을거임.
-11. 재생 상태에 따라 버튼 모양 바꾸기
 */
 
 function createWindow(){
@@ -73,6 +71,9 @@ function createWindow(){
                 }
             }
           ]
+        },
+        {
+            type: 'separator'
         },
         {
           role: 'help',
