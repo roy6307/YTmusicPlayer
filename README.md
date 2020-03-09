@@ -13,4 +13,4 @@ This program needs "[node.js](https://nodejs.org/)"
 3. type music name, and click 'search!' button or press enter.
 4. click a video image or text.
 5. wait while song's name appear. 
-6. press the gray squre button of bottom.
+6. press the orange color triangle button of bottom.
