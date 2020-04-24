@@ -8,8 +8,8 @@ const fs = require('fs')
 
 function createWindow(){
     let win = new BrowserWindow({
-        width:580,
-        height:355,
+        width:960,
+        height:540,
         resizable:false,
         webPreferences:{
             nodeIntegration:true

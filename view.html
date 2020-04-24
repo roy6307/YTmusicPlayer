@@ -21,24 +21,71 @@
         const {shell} = require('electron');
         var compare;
         var IT = false;
-        
+
+        document.addEventListener("DOMContentLoaded",_init);
 
         audio.volume = 0.5;
         audio.currentTime = 0;
 
-        LoadBar();
+        function _init(){
 
-        fs.readFile(__dirname+"/data/settings.json",(err,dataqwer) => {
+            console.log("Loading...");
 
-            var a = JSON.parse(dataqwer);
+            LoadBar();
+            drawing();
 
-            if(a.API == undefined){
+            fs.readFile(__dirname+"/data/settings.json",(err,dataqwer) => {
 
-                alert("Can't find API key.\nConfig file will be opened.");
-                shell.openItem(__dirname+"/data/settings.json");
+                var a = JSON.parse(dataqwer);
 
-            }
-        });
+                if(a.API == undefined || a.API == ""){
+
+                    alert("Can't find API key.\nSetting file will be opened.");
+                    shell.openItem(__dirname+"/data/settings.json");
+
+                }
+            });
+
+            console.log("Done!");
+
+        }
+
+        function drawing(){
+
+            var barlist = document.getElementsByClassName("bar");
+
+            var animate;
+            var asdf=1.62;
+            var asdf2=2.01;
+
+            document.getElementById('MV').style.height = "1.62%";
+            barlist[0].style.width = "1%";
+            barlist[1].style.width = "1%";
+
+            animate = setInterval(function(){
+
+                    document.getElementById("MV").style.height =asdf+"%";
+                    barlist[0].style.width = asdf2+"%";
+                    barlist[1].style.width = asdf2+"%";
+
+                    if(asdf>72.8 || asdf2 > 90.9) {
+
+                        console.log("Clear Interval");
+                        document.getElementById("MV").style.height = "72.9%";
+                        barlist[0].style.width = "91%";
+                        barlist[1].style.width = "91%";
+                        document.getElementById("MV").style.overflow = "auto";
+                        clearInterval(animate);
+
+                    }
+
+                    asdf = asdf * 1.1;
+                    asdf2 = asdf2 * 1.1;
+
+            },19);
+
+            
+        }
 
         function LoadBar(){
 
@@ -90,7 +137,7 @@
                     }else{
                 
                         var r = document.getElementById("search_bar").value,
-                        a = "https://www.googleapis.com/youtube/v3/search?q=" + encodeURI(r) + "&part=snippet&key="+a.API+"&maxResults=10";
+                        a = "https://www.googleapis.com/youtube/v3/search?q=" + encodeURI(r) + "&part=snippet&type=video&key="+a.API+"&maxResults=50";
 
                         var n = new Array,
                             s = new Array,
@@ -99,6 +146,7 @@
                         request(a, function(t, r, b) {
                             var u = JSON.parse(b).items;
                             LEN = Object.keys(u).length;
+                            console.log(u)
 
                             for (var o = 0; o < LEN; o++) {
 
@@ -178,10 +226,11 @@
             for (var t = 0; t < Object.keys(e.Titles).length; t++) {
 
                 var n = "video" + (t + 1),
-                    i = '<input type="image" src="' + e.Thumbnails[t].medium.url + '" style="padding-bottom: 4px; width: 132px; height: 77px; float: left;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">',
+                    i = '<input type="image" src="' + e.Thumbnails[t].medium.url + '" style="padding-bottom: 4px; width: 184.8px; height: 113.4px; float: left;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">',
                     l = 'text' + (t + 1),
-                    o = '<div style="display: inline-block; height: 81px; width: 383px; word-break:normal;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">' + e.Titles[t] + '</div>';
-                document.getElementById(l).innerHTML = o, document.getElementById(n).innerHTML = i
+                    o = '<div style="display: inline-block; height: 112.4px; width: 383px; word-break:normal; margin-left: 10px; margin-top: 5px;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">' + e.Titles[t] + '</div>';
+                document.getElementById(l).innerHTML = o
+                document.getElementById(n).innerHTML = i
 
             }
         }
@@ -304,15 +353,15 @@
         }
         
     </style>
-    <div class="real_main_div">
-        <div class="main_div">
 
-            <div id="top_bar" style="padding-bottom: 2px;">
-                <input id="search_bar" type="text" value="" onkeypress="DoesPress13(event)"/><input id="btn_search" type="button" value="search!" onclick="search().then(() => insert(data))" /><div id="load_bar">Downloading</div>
+            <div id="top_bar">
+                <input id="search_bar" type="text" value="" onkeypress="DoesPress13(event)"/><div id="load_bar">Downloading</div>
             </div>
-            <hr width="91%">
+            
 
-            <div class="MV" style="overflow: auto; height: 162px;">
+            <div id="MV">
+
+                <hr class="bar" width="91%">
 
                 <div class="imgs">
 
@@ -326,6 +375,46 @@
                     <div id="video8"></div>
                     <div id="video9"></div>
                     <div id="video10"></div>
+                    <div id="video11"></div>
+                    <div id="video12"></div>
+                    <div id="video13"></div>
+                    <div id="video14"></div>
+                    <div id="video15"></div>
+                    <div id="video16"></div>
+                    <div id="video17"></div>
+                    <div id="video18"></div>
+                    <div id="video19"></div>
+                    <div id="video20"></div>
+                    <div id="video21"></div>
+                    <div id="video22"></div>
+                    <div id="video23"></div>
+                    <div id="video24"></div>
+                    <div id="video25"></div>
+                    <div id="video26"></div>
+                    <div id="video27"></div>
+                    <div id="video28"></div>
+                    <div id="video29"></div>
+                    <div id="video30"></div>
+                    <div id="video31"></div>
+                    <div id="video32"></div>
+                    <div id="video33"></div>
+                    <div id="video34"></div>
+                    <div id="video35"></div>
+                    <div id="video36"></div>
+                    <div id="video37"></div>
+                    <div id="video38"></div>
+                    <div id="video39"></div>
+                    <div id="video40"></div>
+                    <div id="video41"></div>
+                    <div id="video42"></div>
+                    <div id="video43"></div>
+                    <div id="video44"></div>
+                    <div id="video45"></div>
+                    <div id="video46"></div>
+                    <div id="video47"></div>
+                    <div id="video48"></div>
+                    <div id="video49"></div>
+                    <div id="video50"></div>
 
                 </div>
 
@@ -341,6 +430,46 @@
                     <div id="text8"></div>
                     <div id="text9"></div>
                     <div id="text10"></div>
+                    <div id="text11"></div>
+                    <div id="text12"></div>
+                    <div id="text13"></div>
+                    <div id="text14"></div>
+                    <div id="text15"></div>
+                    <div id="text16"></div>
+                    <div id="text17"></div>
+                    <div id="text18"></div>
+                    <div id="text19"></div>
+                    <div id="text20"></div>
+                    <div id="text21"></div>
+                    <div id="text22"></div>
+                    <div id="text23"></div>
+                    <div id="text24"></div>
+                    <div id="text25"></div>
+                    <div id="text26"></div>
+                    <div id="text27"></div>
+                    <div id="text28"></div>
+                    <div id="text29"></div>
+                    <div id="text30"></div>
+                    <div id="text31"></div>
+                    <div id="text32"></div>
+                    <div id="text33"></div>
+                    <div id="text34"></div>
+                    <div id="text35"></div>
+                    <div id="text36"></div>
+                    <div id="text37"></div>
+                    <div id="text38"></div>
+                    <div id="text39"></div>
+                    <div id="text40"></div>
+                    <div id="text41"></div>
+                    <div id="text42"></div>
+                    <div id="text43"></div>
+                    <div id="text44"></div>
+                    <div id="text45"></div>
+                    <div id="text46"></div>
+                    <div id="text47"></div>
+                    <div id="text48"></div>
+                    <div id="text49"></div>
+                    <div id="text50"></div>
 
                 </div>
 
@@ -348,10 +477,11 @@
 
         </div>
 
-        <div style="width: 556px; height: 54px;" id="under">
-            <hr width="91%">
+        <div style="width: 100%; height: 54px;" id="under">
+            
+            <hr class="bar" width="91%">
 
-            <div id="name_display" style="float: left; width: 330.7px; height: 51px;">
+            <div id="name_display">
 
             </div>
 
@@ -368,9 +498,6 @@
             </div>
 
         </div>
-
-    </div>
-    </div>
 
 </body>
 
