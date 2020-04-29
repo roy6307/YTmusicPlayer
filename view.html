@@ -24,7 +24,6 @@
 
         document.addEventListener("DOMContentLoaded",_init);
 
-        audio.volume = 0.5;
         audio.currentTime = 0;
 
         function _init(){
@@ -37,6 +36,8 @@
             fs.readFile(__dirname+"/data/settings.json",(err,dataqwer) => {
 
                 var a = JSON.parse(dataqwer);
+
+                audio.volume = a.Volume;
 
                 if(a.API == undefined || a.API == ""){
 
@@ -55,7 +56,7 @@
             var barlist = document.getElementsByClassName("bar");
 
             var animate;
-            var asdf=1.62;
+            var asdf=1.69;
             var asdf2=2.01;
 
             document.getElementById('MV').style.height = "1.62%";
@@ -68,10 +69,10 @@
                     barlist[0].style.width = asdf2+"%";
                     barlist[1].style.width = asdf2+"%";
 
-                    if(asdf>72.8 || asdf2 > 90.9) {
+                    if(asdf>76.4 || asdf2 > 90.9) {
 
                         console.log("Clear Interval");
-                        document.getElementById("MV").style.height = "72.9%";
+                        document.getElementById("MV").style.height = "76.6%";
                         barlist[0].style.width = "91%";
                         barlist[1].style.width = "91%";
                         document.getElementById("MV").style.overflow = "auto";
@@ -269,16 +270,33 @@
 
             compare = ("file:///"+__dirname+"/data/cache/"+selected).replace(/\\/gi,"/");
 
-            if (selected != "" && audio.currentTime != 0 && audio.src != compare){ //재생중 재생
+            if (audio.currentTime != 0 && audio.src != compare){ //재생중 재생
 
-                IsPlaying = false;
+                audio.pause();
+                IsPlaying = true;
                 audio.currentTime = 0;
                 audio.src = __dirname+"/data/cache/"+selected;
-                play();
+                compare = ("file:///"+__dirname+"/data/cache/"+selected).replace(/\\/gi,"/");
+                audio.play();
+
+                cen.position = "absolute";
+                cen.width = "24.4px";
+                cen.height = "24.4px";
+                cen.borderTop = "";
+                cen.borderBottom = "";
+                cen.borderRight = "";
+                cen.borderLeft = "";
+                cen.backgroundColor = "rgb(153, 153, 153)";
+                cen.top = "7px";
+                cen.left = "7px";
+
+                return;
 
             }
 
-            if (IsPlaying == true && selected != "" && audio.currentTime != 0 && audio.src == compare) { //play to pause
+            if (IsPlaying == true && audio.currentTime != 0 && audio.src == compare) { //play to pause
+
+                console.log("play to puase")
 
                 audio.pause();
                 IsPlaying = false;
@@ -288,7 +306,7 @@
 
             }
 
-            if (IsPlaying == false && selected == "" && audio.currentTime == 0 && audio.src == compare) { //재생이 끝나있음
+            if (IsPlaying == false && audio.currentTime == 0 && audio.src == compare) { //재생이 끝나있음
 
                 alert("Please select a song!");
 
@@ -296,7 +314,9 @@
 
             }
 
-            if (IsPlaying == false && selected != "" && audio.currentTime != 0 && audio.src == compare) { //pause to play
+            if (IsPlaying == false &&audio.currentTime != 0 && audio.src == compare) { //pause to play
+
+                console.log("Pause to play")
 
                 audio.play();
                 IsPlaying = true;
@@ -309,7 +329,7 @@
 
             }
 
-            if (IsPlaying == false && selected != "" && audio.currentTime == 0) { //selected, but not playing
+            if (IsPlaying == false && audio.currentTime == 0) { //selected, but not playing
 
                 audio.src = __dirname+'/data/cache/' + selected;
                 audio.play();
@@ -325,10 +345,8 @@
                     audio.currentTime = 0;
                     IsPlaying = false;
 
-                    selected = "";
                     console.log('song end');
                     
-
                 });
 
                 return;
