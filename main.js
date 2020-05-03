@@ -1,5 +1,7 @@
-const {app, BrowserWindow, Menu, shell} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const fs = require('fs')
+
+var Volu;
 
 /*
 https://www.flaticon.com/packs/music-audio
@@ -33,7 +35,7 @@ function createWindow(){
 
         fs.exists(__dirname+"/data/settings.json", (IsExist3) => {
 
-            if(IsExist3 == false) fs.writeFile(__dirname+"/data/settings.json", '{\n"API": ""\n}', (err) => {console.log(err);})
+            if(IsExist3 == false) fs.writeFile(__dirname+"/data/settings.json", '{\n"API": ""\n,"Volume": "0.5"}', (err) => {console.log(err);})
 
         })
 
@@ -57,44 +59,28 @@ function createWindow(){
 
     }
 
-    const template = [
-        {
-          label: 'File',
-          submenu: [
-            {
-                label: "Config API key",
-                click: async () => {
-                    await shell.openItem(__dirname+"/data/settings.json");
-                }
-            },
-            {
-                label: "Remove caches",
-                click: async () => {
-                    await RemoveCache();
-                }
-            }
-          ]
-        },
-        {
-            type: 'separator'
-        },
-        {
-          role: 'help',
-          submenu: [
-            {
-                label: 'Source code',
-                click: async () => {
-                    await shell.openExternal('https://github.com/roy6307/YTmusicPlayer');
-                }
-            }
-          ]
-        }
-      ]
-      
-      const menu = Menu.buildFromTemplate(template)
-      Menu.setApplicationMenu(menu)
-    
-
 }
+
+ipcMain.on("Vol-Change", (event,n) => {
+
+    Volu = n;
+    event.returnValue = "Got";
+
+});
+
+app.on("window-all-closed", () => {
+    
+    fs.readFile(__dirname+"/data/settings.json", (err,d) => {
+
+        var jn = JSON.parse(d);
+        jn.Volume = Volu/100;
+        
+        fs.writeFile(__dirname+"/data/settings.json", JSON.stringify(jn), 'utf8', (err) => {console.log(err);});
+
+    });
+
+    app.quit();
+
+});
 
 app.on('ready', createWindow);

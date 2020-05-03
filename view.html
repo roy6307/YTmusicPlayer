@@ -19,6 +19,7 @@
         var IsPlaying = false;
         var audio = new Audio();
         const {shell} = require('electron');
+        const {ipcRenderer} = require('electron');
         const remote = require('electron').remote;
         const currentWindow = remote.getCurrentWindow(); 
         var compare;
@@ -40,10 +41,11 @@
                 var a = JSON.parse(dataqwer);
 
                 audio.volume = a.Volume;
+                document.getElementById("Volume").value = a.Volume*100;
 
                 if(a.API == undefined || a.API == ""){
 
-                    alert("Can't find API key.\nSetting file will be opened.");
+                    alert("Can't find API key.\nsettings.json will be opened.");
                     shell.openItem(__dirname+"/data/settings.json");
 
                 }
@@ -358,8 +360,13 @@
         }
 
         function vol(num) {
+
             audio.volume = num / 100;
+
+            ipcRenderer.sendSync("Vol-Change", num+"");
+            
         }
+
     </script>
 
     <style>
@@ -534,7 +541,7 @@
 
             <div style="display: inline-block;">
 
-                <input type="range" id="Volume" min="0" max="100" value="50" oninput="vol(this.value)">
+                <input type="range" id="Volume" min="0" max="100" value="audio.volume" oninput="vol(this.value)">
 
             </div>
 
