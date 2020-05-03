@@ -2,15 +2,18 @@ const {app, BrowserWindow, Menu, shell} = require('electron');
 const fs = require('fs')
 
 /*
+https://www.flaticon.com/packs/music-audio
+https://codepen.io/noahblon/pen/OyajvN
 7. 재생한거 다시 재생
 9. 캐쉬처럼 쌓아놓고 나중에 ffmpeg 같은걸로 널널할때 변환해서 용량 줄여놓기, 나중에 같은거 재생할때 용량이랑 로딩이 줄을거임.
 */
 
 function createWindow(){
     let win = new BrowserWindow({
-        width:960,
-        height:540,
+        width:1180,
+        height:664,
         resizable:false,
+        frame:false,
         webPreferences:{
             nodeIntegration:true
         }

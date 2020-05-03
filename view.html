@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="background-color: rgb(109, 109, 109);">
+<html style="background-color: #36393F;">
 
 <head>
     <meta charset="UTF-8">
@@ -19,6 +19,8 @@
         var IsPlaying = false;
         var audio = new Audio();
         const {shell} = require('electron');
+        const remote = require('electron').remote;
+        const currentWindow = remote.getCurrentWindow(); 
         var compare;
         var IT = false;
 
@@ -229,7 +231,7 @@
                 var n = "video" + (t + 1),
                     i = '<input type="image" src="' + e.Thumbnails[t].medium.url + '" style="padding-bottom: 4px; width: 184.8px; height: 113.4px; float: left;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">',
                     l = 'text' + (t + 1),
-                    o = '<div style="display: inline-block; height: 112.4px; width: 383px; word-break:normal; margin-left: 10px; margin-top: 5px;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">' + e.Titles[t] + '</div>';
+                    o = '<div style="display: inline-block; height: 112.4px; width: 100%; word-break:normal; margin-left: 10px; margin-top: 5px;" onclick="clicked(\'' + e.Ids[t] + '\',\'' + e.Titles[t].replace(/(&#39;)/gi,"\\'") + '\')">' + e.Titles[t] + '</div>';
                 document.getElementById(l).innerHTML = o
                 document.getElementById(n).innerHTML = i
 
@@ -372,14 +374,39 @@
         
     </style>
 
+            <div id="Frame">
+
+                <div id="Title">Youtube Music Player</div>
+
+                <div id="Dragable"></div>
+
+                <div id="Btn_minimize" onclick="currentWindow.minimize()">
+
+                    <svg height="18" width="18">
+                        <polyline points="4.5,13.5 17,13.5" style="fill:none; stroke:gray; stroke-width:1.5"/>
+                    </svg>
+
+                </div>
+
+                <div id="Btn_close" onclick="currentWindow.close()">
+
+                    <svg height="18" width="18">
+                        <polyline points="6,6 15,15" style="fill:none; stroke:gray; stroke-width:1.5"/>
+                        <polyline points="15,6 6,15" style="fill:none; stroke:gray; stroke-width:1.5"/>
+                    </svg>
+
+                </div>
+
+            </div>
+
             <div id="top_bar">
                 <input id="search_bar" type="text" value="" onkeypress="DoesPress13(event)"/><div id="load_bar">Downloading</div>
             </div>
+
+            <hr class="bar" width="91%">
             
 
             <div id="MV">
-
-                <hr class="bar" width="91%">
 
                 <div class="imgs">
 
@@ -503,9 +530,11 @@
 
             </div>
 
+            
+
             <div style="display: inline-block;">
 
-                <input type="range" min="0" max="100" value="50" oninput="vol(this.value)">
+                <input type="range" id="Volume" min="0" max="100" value="50" oninput="vol(this.value)">
 
             </div>
 
