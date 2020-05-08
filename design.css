@@ -169,3 +169,12 @@ input[type=text]{
   border: #50555C solid 1px;
   background-color: #eeeeee;
 }
+
+.imgs {
+  float: left;
+}
+
+.texts {
+  padding-left: 7px;
+  display: inline-block;
+}
